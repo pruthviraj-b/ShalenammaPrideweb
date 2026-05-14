@@ -1,16 +1,53 @@
-# React + Vite
+<h1 align="center">🌐 Shale-Namma Parent Portal</h1>
+<p align="center"><strong>The Real-Time Window into School Life for Parents</strong></p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  <a href="https://github.com/pruthviraj-b/ShalenammaPrideweb"><strong>Parent Web Portal</strong></a> •
+  <a href="https://github.com/pruthviraj-b/ShalenammaPride"><strong>Android Admin App</strong></a> •
+  <a href="https://shalenammapride-b4fc8.web.app/"><strong>Live Demo</strong></a>
+</p>
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 📋 Professional Project Overview
 
-## React Compiler
+| Field | Details |
+| :--- | :--- |
+| **Project Title** | **Shale-Namma Parent Portal (ಶಾಲಾ ನಮ್ಮ ಹೆಮ್ಮೆ)** |
+| **Short Description** | A high-fidelity, read-only web dashboard designed for parents to monitor school meals, facility health, and announcements in real-time. |
+| **Live URL** | [https://shalenammapride-b4fc8.web.app/](https://shalenammapride-b4fc8.web.app/) |
+| **GitHub URL** | [https://github.com/pruthviraj-b/ShalenammaPrideweb](https://github.com/pruthviraj-b/ShalenammaPrideweb) |
+| **Problem Statement** | Parents are often disconnected from their children's school environment, particularly regarding meal quality and basic infrastructure. This portal solves that by providing a transparent, bilingual, and live-updated view of school operations. |
+| **Technologies Used** | **Frontend:** React.js, Vite, Vanilla CSS. <br> **Real-time:** Firebase Cloud Firestore. <br> **Deployment:** Firebase Hosting. |
+| **Connected Android Repo** | [ShalenammaPride](https://github.com/pruthviraj-b/ShalenammaPride) |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+### 🔄 The Ecosystem: Real-Time Sync
+This web portal is the "Viewing Window" of a dual-system ecosystem:
+1. **Admin Android App ([Android Repo](https://github.com/pruthviraj-b/ShalenammaPride)):** Used by school staff to log daily data.
+2. **Parent Web Portal (This Repo):** Instantly displays that data for parents.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The connection is powered by **Firebase Firestore Listeners**, allowing the website to update dynamically (without refreshing) the moment an admin submits a report from the school.
+
+---
+
+### 🚀 Key Technical Highlights
+
+*   **Responsive Dashboard:** Optimized for mobile-first parents, ensuring high readability on any device.
+*   **Zero-Latency Updates:** Leverages Firebase's real-time SDK to provide an "App-like" experience on the web.
+*   **Bilingual Support:** Full English and **Kannada** localization to ensure inclusivity for all user backgrounds.
+*   **Optimized Performance:** Built with Vite for lightning-fast load times and smooth transitions.
+
+---
+
+### 👤 Developer
+**Pruthviraj B**  
+*Full Stack Developer | Building scalable solutions for educational modernization.*
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat-square&logo=linkedin)](https://linkedin.com/in/pruthvirajbc)
+
+---
+<p align="center">
+  <sub>Built with ❤️ for a better educational future.</sub>
+</p>
