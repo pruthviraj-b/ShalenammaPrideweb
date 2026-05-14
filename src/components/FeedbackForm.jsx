@@ -1,256 +1,228 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { ref, push, set, onValue } from 'firebase/database';
+import React, { useState, useEffect } from 'react';
+import { MessageSquare, Send, CheckCircle, Clock, Info } from 'lucide-react';
 import { database } from '../firebase';
-import { MessageSquare, CheckCircle, Clock, Send, School, ImagePlus, X } from 'lucide-react';
+import { ref, push, onValue, set } from 'firebase/database';
 import { useLanguage } from '../context/LanguageContext';
 
 const FeedbackForm = () => {
-  const { t } = useLanguage();
-  const [feedbacks, setFeedbacks] = useState([]);
-  const [name, setName] = useState('');
-  const [message, setMessage] = useState('');
-  const [anonymous, setAnonymous] = useState(false);
+  const [formData, setFormData] = useState({ name: '', feedback: '', category: 'General' });
+  const [feedbackList, setFeedbackList] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [attachedImage, setAttachedImage] = useState(null);
-  const fileInputRef = useRef(null);
+  const [activeFilter, setActiveFilter] = useState('All');
+  const { t } = useLanguage();
 
   useEffect(() => {
     const feedbackRef = ref(database, 'feedback');
     const unsubscribe = onValue(feedbackRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const feedbackList = Object.keys(data).map(key => ({
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const list = Object.keys(data).map(key => ({
           id: key,
           ...data[key]
         })).sort((a, b) => b.timestamp - a.timestamp);
-        setFeedbacks(feedbackList);
-      } else {
-        setFeedbacks([]);
+        setFeedbackList(list);
       }
     });
-
     return () => unsubscribe();
   }, []);
 
-  const handleImageSelect = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // Compress image using canvas
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          let width = img.width;
-          let height = img.height;
-          
-          if (width > 800) {
-            height = Math.round((height * 800) / width);
-            width = 800;
-          }
-          
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          
-          // Export as compressed jpeg
-          setAttachedImage(canvas.toDataURL('image/jpeg', 0.6));
-        };
-        img.src = reader.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!message.trim()) return;
-    
+    if (!formData.name || !formData.feedback) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const feedbackRef = ref(database, 'feedback');
-      const newFeedbackRef = push(feedbackRef);
-      await set(newFeedbackRef, {
-        name: anonymous ? 'Anonymous' : (name.trim() || 'Anonymous'),
-        message: message.trim(),
-        anonymous,
-        resolved: false,
-        timestamp: Date.now(),
-        image: attachedImage || null
+      await push(feedbackRef, {
+        ...formData,
+        status: 'Pending',
+        timestamp: Date.now()
       });
-      
-      setName('');
-      setMessage('');
-      setAnonymous(false);
-      setAttachedImage(null);
-      window.dispatchEvent(new CustomEvent('show-toast', { detail: 'Feedback Sent Securely' }));
+      setFormData({ name: '', feedback: '', category: 'General' });
+      alert("Feedback sent successfully!");
     } catch (error) {
-      console.error("Error submitting feedback: ", error);
-      window.dispatchEvent(new CustomEvent('show-toast', { detail: 'Failed to submit. Check config.' }));
-    } finally {
-      setIsSubmitting(false);
+      console.error(error);
+      alert("Failed to send feedback.");
     }
+    setIsSubmitting(false);
   };
 
+  const formatDate = (ms) => {
+    return new Date(ms).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+  };
+
+  const filteredFeedback = feedbackList.filter(item => {
+    if (activeFilter === 'All') return true;
+    return item.status === activeFilter;
+  });
+
   return (
-    <section className="container mt-16 mb-16 animate-slide-up delay-400">
-      <div className="flex items-center gap-3 mb-8">
-        <div className="premium-icon-wrapper">
-          <MessageSquare size={24} />
+    <section className="animate-slide-up" style={{ padding: '4rem 0' }}>
+      <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+        <div className="feature-badge" style={{ margin: '0 auto 1.5rem' }}>
+          <MessageSquare size={16} /> PARENT COMMUNICATION
         </div>
-        <h2 style={{ marginBottom: 0 }}>{t('communityVoice')}</h2>
+        <h2 style={{ marginBottom: '1rem', justifyContent: 'center' }}>
+          {t('feedbackTitle') || 'Direct Feedback Portal'}
+        </h2>
+        <p style={{ maxWidth: '600px', margin: '0 auto' }}>
+          Share your thoughts, suggestions, or concerns directly with the school administration.
+        </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-8" style={{ alignItems: 'start' }}>
-        {/* Form Column */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 450px), 1fr))', gap: '4rem', alignItems: 'start' }}>
+        {/* Feedback Form */}
         <div className="card">
-          <div style={{ marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{t('shareThoughtsTitle')}</h3>
-            <p style={{ fontSize: '0.95rem' }}>{t('shareThoughtsDesc')}</p>
-          </div>
-
-          <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.75rem', fontWeight: '600', fontSize: '0.95rem' }}>{t('nameLabel')}</label>
-              <input
-                type="text"
-                className="input-field"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder={t('namePlaceholder')}
-                disabled={anonymous}
-                style={{ opacity: anonymous ? 0.6 : 1 }}
-              />
-            </div>
-            
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', fontSize: '0.95rem', fontWeight: '500' }}>
-                <div style={{ position: 'relative', width: '20px', height: '20px' }}>
-                  <input
-                    type="checkbox"
-                    checked={anonymous}
-                    onChange={(e) => setAnonymous(e.target.checked)}
-                    style={{ width: '100%', height: '100%', cursor: 'pointer', accentColor: 'var(--accent-color)' }}
-                  />
-                </div>
-                {t('anonymousLabel')}
-              </label>
-            </div>
-
-            <div style={{ marginBottom: '2rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.75rem', fontWeight: '600', fontSize: '0.95rem' }}>{t('messageLabel')}</label>
-              <textarea
-                className="input-field"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder={t('messagePlaceholder')}
-                required
-                rows="5"
-                style={{ resize: 'vertical' }}
-              />
-            </div>
-
-            {attachedImage && (
-              <div style={{ marginBottom: '1.5rem', position: 'relative', display: 'inline-block' }}>
-                <img src={attachedImage} alt="Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }} />
-                <button 
-                  type="button"
-                  onClick={() => setAttachedImage(null)}
-                  style={{ position: 'absolute', top: '-8px', right: '-8px', background: 'var(--danger-color, #ef4444)', color: 'white', borderRadius: '50%', padding: '0.2rem', border: 'none', cursor: 'pointer' }}
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            )}
-
-            <div style={{ display: 'flex', gap: '1rem' }}>
+          <h3 style={{ marginBottom: '2rem' }}>Send Message</h3>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '700', fontSize: '0.85rem' }}>PARENT NAME</label>
               <input 
-                type="file" 
-                accept="image/*" 
-                ref={fileInputRef} 
-                style={{ display: 'none' }} 
-                onChange={handleImageSelect} 
+                className="input-field"
+                placeholder="Enter your full name"
+                value={formData.name}
+                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                required
               />
-              <button 
-                type="button" 
-                onClick={() => fileInputRef.current.click()} 
-                className="btn" 
-                style={{ background: 'var(--bg-secondary)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', flexShrink: 0 }}
-                disabled={isSubmitting}
-                title={t('attachImage')}
-              >
-                <ImagePlus size={18} />
-              </button>
-              <button type="submit" className="btn" style={{ flex: 1 }} disabled={isSubmitting}>
-                {isSubmitting ? t('submittingBtn') : (
-                  <>
-                    {t('submitBtn')} <Send size={18} style={{ marginLeft: '0.5rem' }} />
-                  </>
-                )}
-              </button>
             </div>
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '700', fontSize: '0.85rem' }}>CATEGORY</label>
+              <select 
+                className="input-field"
+                value={formData.category}
+                onChange={(e) => setFormData({...formData, category: e.target.value})}
+              >
+                <option value="General">General Inquiry</option>
+                <option value="Academics">Academics</option>
+                <option value="Facilities">Facilities</option>
+                <option value="Meals">Meal Program</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '700', fontSize: '0.85rem' }}>MESSAGE</label>
+              <textarea 
+                className="input-field"
+                placeholder="How can we help you?"
+                rows={5}
+                style={{ resize: 'none' }}
+                value={formData.feedback}
+                onChange={(e) => setFormData({...formData, feedback: e.target.value})}
+                required
+              ></textarea>
+            </div>
+            <button type="submit" className="btn btn-primary" disabled={isSubmitting} style={{ width: '100%', padding: '1.25rem' }}>
+              {isSubmitting ? 'Sending...' : <><Send size={18} /> Send Feedback</>}
+            </button>
           </form>
         </div>
 
-        {/* History Column */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.25rem', paddingLeft: '0.5rem' }}>{t('recentConversations')}</h3>
-          
-          {feedbacks.length > 0 ? (
-            feedbacks.map((fb) => (
-              <div key={fb.id} className="card" style={{ padding: '1.5rem', borderLeft: fb.resolved ? '4px solid #10B981' : '4px solid #F59E0B' }}>
-                <div className="flex justify-between items-start mb-3">
-                  <span style={{ fontWeight: '700', fontSize: '1.1rem' }}>{fb.name}</span>
-                  {fb.resolved ? (
-                    <span className="premium-badge" style={{ color: '#10B981' }}>
-                      <CheckCircle size={14} /> {t('resolved')}
-                    </span>
-                  ) : (
-                    <span className="premium-badge" style={{ color: '#F59E0B' }}>
-                      <Clock size={14} /> {t('pending')}
-                    </span>
+        {/* Feedback History */}
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <h3 style={{ margin: 0 }}>Message History</h3>
+            <div className="glass" style={{ display: 'flex', gap: '0.25rem', padding: '0.3rem', borderRadius: 'var(--radius-full)' }}>
+               {['All', 'Pending', 'Resolved'].map(s => (
+                 <button 
+                  key={s} 
+                  onClick={() => setActiveFilter(s)}
+                  style={{ 
+                    padding: '0.4rem 0.75rem', 
+                    borderRadius: 'var(--radius-full)', 
+                    border: 'none', 
+                    fontSize: '0.75rem', 
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    background: activeFilter === s ? 'var(--text-primary)' : 'transparent',
+                    color: activeFilter === s ? 'var(--bg-color)' : 'var(--text-secondary)'
+                  }}
+                 >{s}</button>
+               ))}
+            </div>
+          </div>
+
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: '2rem', 
+            maxHeight: '700px', 
+            overflowY: 'auto', 
+            padding: '1.5rem', 
+            background: 'var(--blue-light)', 
+            borderRadius: 'var(--radius-xl)',
+            border: '1px solid var(--govt-border)'
+          }}>
+            {filteredFeedback.length === 0 ? (
+              <div className="card text-center" style={{ padding: '3rem', background: 'transparent', boxShadow: 'none', border: 'none' }}>
+                <Info size={40} style={{ margin: '0 auto 1.5rem', opacity: 0.3 }} />
+                <p style={{ opacity: 0.6 }}>No messages found.</p>
+              </div>
+            ) : (
+              filteredFeedback.map(item => (
+                <div key={item.id} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  
+                  {/* Parent Message Bubble (Aligned Right) */}
+                  <div style={{ alignSelf: 'flex-end', maxWidth: '90%', display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: '700', marginBottom: '0.25rem', marginRight: '0.5rem' }}>
+                      {item.name} • {item.category}
+                    </div>
+                    <div style={{ 
+                      background: '#1E293B', // Solid dark slate for parent bubble 
+                      color: 'white', 
+                      padding: '1.25rem 1.5rem', 
+                      borderRadius: '24px 24px 4px 24px', 
+                      boxShadow: 'var(--shadow-md)',
+                      position: 'relative',
+                      border: '1px solid rgba(255,255,255,0.1)'
+                    }}>
+                      <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: '1.6', color: 'white' }}>{item.feedback}</p>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', alignItems: 'center', marginTop: '0.75rem', fontSize: '0.7rem', opacity: 0.8 }}>
+                         {formatDate(item.timestamp)}
+                         {item.status?.toLowerCase() === 'resolved' ? <CheckCircle size={14} color="#10B981" /> : <Clock size={14} />}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Admin Reply Bubble (Aligned Left) */}
+                  {item.adminReply && (
+                    <div style={{ alignSelf: 'flex-start', maxWidth: '90%', display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
+                      <div style={{ 
+                        width: '36px', 
+                        height: '36px', 
+                        borderRadius: '50%', 
+                        background: 'var(--blue)', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        color: 'white', 
+                        flexShrink: 0,
+                        boxShadow: 'var(--shadow-sm)'
+                      }}>
+                        <MessageSquare size={18} />
+                      </div>
+                      <div style={{ 
+                        background: 'var(--card-bg, #ffffff)', 
+                        border: '1px solid var(--govt-border)',
+                        padding: '1.25rem 1.5rem', 
+                        borderRadius: '4px 24px 24px 24px', 
+                        boxShadow: 'var(--shadow-md)'
+                      }}>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--blue)', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>SCHOOL ADMINISTRATION</div>
+                        <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: '1.6', color: 'var(--navy)' }}>{item.adminReply}</p>
+                      </div>
+                    </div>
                   )}
                 </div>
-                <p style={{ color: 'var(--text-primary)', marginBottom: '1.25rem', fontSize: '1.05rem', lineHeight: '1.6' }}>"{fb.message}"</p>
-                {fb.image && (
-                  <img 
-                    src={fb.image} 
-                    alt="Feedback Attachment" 
-                    className="gallery-image"
-                    style={{ maxWidth: '200px', borderRadius: 'var(--radius-sm)', marginBottom: '1.25rem', cursor: 'pointer', border: '1px solid var(--border-color)' }}
-                    onClick={() => {
-                      const event = new CustomEvent('open-lightbox', { detail: { src: fb.image, alt: 'Feedback Attachment' } });
-                      window.dispatchEvent(event);
-                    }}
-                  />
-                )}
-                {fb.adminReply && (
-                  <div style={{ 
-                    backgroundColor: 'rgba(37, 99, 235, 0.1)', 
-                    padding: '1.25rem', 
-                    borderRadius: 'var(--radius-md)',
-                    borderLeft: '3px solid var(--accent-color)'
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: '700', color: 'var(--accent-color)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                      <School size={14} /> {t('officialResponse')}
-                    </div>
-                    <p style={{ fontSize: '0.95rem', color: 'var(--text-primary)', lineHeight: '1.6' }}>{fb.adminReply}</p>
-                  </div>
-                )}
-              </div>
-            ))
-          ) : (
-            <div className="card empty-card text-center" style={{ padding: '4rem' }}>
-              <div className="premium-icon-wrapper" style={{ margin: '0 auto 1rem' }}>
-                <MessageSquare size={24} />
-              </div>
-              <p>{t('noFeedback')}</p>
-            </div>
-          )}
+              ))
+            )}
+          </div>
         </div>
       </div>
     </section>
   );
 };
+
 export default FeedbackForm;

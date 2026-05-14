@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "announcements": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": ["timestamp", "priority", "type"]
+    },
+    ".read": true,
+    ".write": true
+  }
+}

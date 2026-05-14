@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Dashboard from './components/Dashboard';
 import Hero from './components/Hero';
 import MealFeed from './components/MealFeed';
 import Facilities from './components/Facilities';
@@ -6,11 +7,17 @@ import StarsGallery from './components/StarsGallery';
 import FeedbackForm from './components/FeedbackForm';
 import ToastContainer from './components/ToastContainer';
 import Lightbox from './components/Lightbox';
-import { School, Moon, Sun, Languages, Circle } from 'lucide-react';
+import { Home, Utensils, Building2, Trophy, Bell, Moon, Sun, Mail, Phone, MapPin, Shield, Users, Award, MessageSquare, ChevronRight, ArrowRight, Calendar } from 'lucide-react';
 import { useLanguage } from './context/LanguageContext';
+
+import AnnouncementsFeed from './components/AnnouncementsFeed';
+import NotificationMarquee from './components/NotificationMarquee';
+import PortalCapabilities from './components/PortalCapabilities';
+import TodayUpdates from './components/TodayUpdates';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
+  const [activeTab, setActiveTab] = useState('Home');
   const { t, toggleLanguage, lang } = useLanguage();
 
   useEffect(() => {
@@ -21,85 +28,229 @@ function App() {
     }
   }, [darkMode]);
 
+  const navItems = [
+    { id: 'Home', icon: <Home size={22} />, label: t('navHome') },
+    { id: 'Meals', icon: <Utensils size={22} />, label: t('navMeals') },
+    { id: 'Infrastructure', icon: <Building2 size={22} />, label: t('navInfrastructure') },
+    { id: 'Student Stars', icon: <Trophy size={22} />, label: t('navStars') },
+    { id: 'Notices', icon: <Bell size={22} />, label: t('navNotices') },
+  ];
+
   return (
-    <div className="App">
+    <div className="App" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <ToastContainer />
       <Lightbox />
 
-      {/* Advanced Floating Pill Header */}
-      <div style={{ position: 'sticky', top: '1rem', zIndex: 50, padding: '0 1rem', display: 'flex', justifyContent: 'center' }}>
-        <header className="animate-slide-up" style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center', 
-          background: darkMode ? 'rgba(30, 41, 59, 0.85)' : 'rgba(255, 255, 255, 0.85)', 
-          backdropFilter: 'blur(24px)', 
-          WebkitBackdropFilter: 'blur(24px)',
-          border: `1px solid ${darkMode ? 'rgba(51, 65, 85, 0.8)' : 'rgba(255, 255, 255, 0.8)'}`, 
-          boxShadow: '0 10px 40px -10px rgba(0, 0, 0, 0.1), inset 0 2px 4px rgba(255, 255, 255, 0.05)', 
-          borderRadius: '9999px', 
-          padding: '0.5rem 0.5rem 0.5rem 1.25rem', 
-          width: '100%', 
-          maxWidth: '900px',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <img src="/logo.png" alt="Shale-Namma Pride Logo" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
-            </div>
-            <div style={{ fontWeight: '800', fontSize: 'clamp(1rem, 3.5vw, 1.2rem)', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-              {t('siteTitle')}
+      {/* Government-Style Header */}
+      <header className="govt-header">
+        <div className="container">
+          <div className="govt-header-top">
+            <div className="govt-logo-center"></div>
+            <img src="/logo.png" alt="Shale-Namma Pride" className="govt-logo" />
+            <div className="govt-header-controls">
+              <div className="lang-toggle-wrapper">
+                <button onClick={() => lang !== 'en' && toggleLanguage()} className={`lang-btn ${lang === 'en' ? 'active' : ''}`}>EN</button>
+                <button onClick={() => lang !== 'kn' && toggleLanguage()} className={`lang-btn ${lang === 'kn' ? 'active' : ''}`}>ಕನ್ನಡ</button>
+              </div>
+              <button onClick={() => setDarkMode(!darkMode)} className="dark-mode-toggle">
+                {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+              </button>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <button 
-              onClick={() => setDarkMode(!darkMode)}
-              style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.25rem' }}
-            >
-              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-            <button 
-              onClick={toggleLanguage}
-              style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.25rem' }}
-              title={t('toggleLang')}
-            >
-              <Languages size={20} />
-            </button>
-            <span className="premium-badge" style={{ padding: '0.6rem', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title={t('liveSyncActive')}>
-              <span className="live-pulse" style={{ margin: 0 }}></span>
-            </span>
+          <h1 className="govt-title">{t('siteTitle')}</h1>
+          <p className="govt-subtitle">{t('parentsPortal')}</p>
+          <div className="values-bar">
+            <span><Shield size={14} /> {t('valTransparency')}</span>
+            <span className="dot" />
+            <span><Users size={14} /> {t('valSafety')}</span>
+            <span className="dot" />
+            <span><Award size={14} /> {t('valAchievement')}</span>
+            <span className="dot" />
+            <span><MessageSquare size={14} /> {t('valCommunication')}</span>
           </div>
-        </header>
-      </div>
 
-      {/* Main Content with Premium Spacing */}
-      <main style={{ paddingBottom: '6rem' }}>
-        <Hero />
-        <MealFeed />
-        <Facilities />
-        <StarsGallery />
-        <FeedbackForm />
+          {/* Quick Links Header Nav */}
+          <nav className="premium-nav">
+            {navItems.map(item => (
+              <button 
+                key={item.id} 
+                onClick={() => setActiveTab(item.id)}
+                className={`premium-nav-btn ${activeTab === item.id ? 'active' : ''}`}
+              >
+                <span className="nav-icon">
+                  {React.cloneElement(item.icon, { size: 18 })}
+                </span>
+                {item.label}
+              </button>
+            ))}
+          </nav>
+        </div>
+      </header>
+
+      <NotificationMarquee />
+
+      {/* Main Content */}
+      <main style={{ flex: 1, paddingBottom: '80px' }}>
+        {activeTab === 'Home' && (
+          <>
+            <div className="container" style={{ paddingTop: '2rem' }}>
+               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'var(--success)', color: 'white', padding: '0.4rem 1rem', borderRadius: '100px', fontSize: '0.7rem', fontWeight: '800', letterSpacing: '0.05em' }} className="animate-pulse">
+                 <div style={{ width: '6px', height: '6px', background: 'white', borderRadius: '50%' }}></div>
+                 {t('liveSyncActive') || 'LIVE REAL-TIME FEED'}
+               </div>
+            </div>
+            <Hero setActiveTab={setActiveTab} />
+            <PortalCapabilities />
+            <TodayUpdates setActiveTab={setActiveTab} />
+            <div className="container" style={{ marginTop: '2rem' }}>
+              <div className="section-header">
+                <div className="section-badge">
+                  <Calendar size={14} /> ARCHIVED RECORDS
+                </div>
+                <h2 className="section-title">Past Meal Log</h2>
+              </div>
+              <MealFeed excludeToday={true} />
+            </div>
+
+            <div className="container" style={{ marginTop: '4rem' }}>
+              <div className="section-header">
+                <div className="section-badge">
+                  <Calendar size={14} /> ARCHIVED RECORDS
+                </div>
+                <h2 className="section-title">Campus Development</h2>
+              </div>
+              <Facilities limit={2} excludeToday={true} />
+            </div>
+
+            <div className="container" style={{ marginTop: '4rem' }}>
+              <div className="section-header">
+                <div className="section-badge">
+                  <Calendar size={14} /> ARCHIVED RECORDS
+                </div>
+                <h2 className="section-title">Past Student Stars</h2>
+              </div>
+              <StarsGallery limit={3} excludeToday={true} /> 
+            </div>
+
+            <div className="container" style={{ marginTop: '4rem' }}>
+              <div className="section-header">
+                <div className="section-badge">
+                  <Calendar size={14} /> ARCHIVED RECORDS
+                </div>
+                <h2 className="section-title">Past Official Notices</h2>
+              </div>
+              <AnnouncementsFeed limit={2} excludeToday={true} />
+            </div>
+          </>
+        )}
+        <div className="container">
+          {activeTab === 'Meals' && <MealFeed />}
+          {activeTab === 'Infrastructure' && <Facilities />}
+          {activeTab === 'Student Stars' && <StarsGallery />}
+          {activeTab === 'Feedback' && <FeedbackForm />}
+          {activeTab === 'Notices' && <AnnouncementsFeed />}
+        </div>
+
+        {/* CTA Section */}
+        {activeTab === 'Home' && (
+          <section className="promo-section">
+             <div className="container">
+                <h2 style={{ marginBottom: '1rem' }} className="text-balance">{t('promoTitle1')} {t('promoTitle2')}</h2>
+                <p>{t('promoDesc')}</p>
+                <button className="btn btn-secondary" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>{t('promoBtn')}</button>
+             </div>
+          </section>
+        )}
       </main>
 
-      {/* Premium Footer */}
-      <footer style={{ 
-        background: darkMode ? 'var(--card-bg)' : 'white', 
-        borderTop: '1px solid var(--border-color)',
-        padding: '4rem 0 2rem',
-        marginTop: 'auto'
-      }}>
-        <div className="container text-center">
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', opacity: 0.9 }}>
-            <img src="/logo.png" alt="Logo" style={{ width: '80px', height: '80px', objectFit: 'contain' }} />
-            <span style={{ fontWeight: '800', fontSize: '1.25rem', color: 'var(--text-primary)' }}>{t('siteTitle')}</span>
+      {/* Premium Dark Govt Footer */}
+      <footer className="site-footer">
+        <div className="container">
+          {/* Brand Header */}
+          <div className="footer-brand">
+            <div className="footer-logo-wrapper">
+              <img src="/logo.png" alt="Gov Logo" className="footer-logo-small" />
+              <div>
+                <h3 className="footer-brand-title">Shale-Namma Pride</h3>
+                <div className="footer-brand-badge">
+                  <Shield size={10} /> {t('parentsPortal') || 'Official Parents Portal'}
+                </div>
+              </div>
+            </div>
+            <p className="footer-desc">
+              {t('footerText') || 'Fostering transparency and excellence in education. A direct connection between our school and your home.'}
+            </p>
           </div>
-          <p style={{ fontSize: '0.95rem', maxWidth: '400px', margin: '0 auto 2rem', color: 'var(--text-secondary)' }}>
-            {t('footerText')}
-          </p>
-          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '2rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
-            &copy; {new Date().getFullYear()} {t('siteTitle')}. {t('allRightsReserved')}
+
+          {/* Quick Links Grid */}
+          <div className="footer-section">
+            <h4 className="footer-section-title">{t('footerQuickLinks') || 'Quick Access'}</h4>
+            <div className="footer-links-grid">
+              {navItems.map(item => (
+                <button key={item.id} className="footer-link-card" onClick={() => setActiveTab(item.id)}>
+                  <div className="footer-link-icon">
+                    {React.cloneElement(item.icon, { size: 18 })}
+                  </div>
+                  <span className="footer-link-label">{item.label}</span>
+                </button>
+              ))}
+              <button className="footer-link-card" onClick={() => setActiveTab('Feedback')}>
+                <div className="footer-link-icon"><MessageSquare size={18} /></div>
+                <span className="footer-link-label">{t('navFeedback') || 'Feedback'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Contact Unified Card */}
+          <div className="footer-section">
+            <h4 className="footer-section-title">{t('footerContact') || 'Contact Administration'}</h4>
+            <div className="footer-contact-card">
+              <div className="contact-item-row">
+                <div className="contact-icon-box"><Mail size={18} /></div>
+                <span className="contact-text">support@shalenamma.edu.in</span>
+                <ChevronRight className="contact-arrow" size={16} />
+              </div>
+              <div className="contact-item-row">
+                <div className="contact-icon-box"><Phone size={18} /></div>
+                <span className="contact-text">+91 80000 00000</span>
+                <ChevronRight className="contact-arrow" size={16} />
+              </div>
+              <div className="contact-item-row">
+                <div className="contact-icon-box"><MapPin size={18} /></div>
+                <span className="contact-text">123 Education Hub, Bengaluru</span>
+                <ChevronRight className="contact-arrow" size={16} />
+              </div>
+            </div>
+          </div>
+
+          {/* Copyright Area */}
+          <div className="footer-bottom">
+            <p className="copyright-text">
+              &copy; 2025 Shale-Namma Pride • {t('allRightsReserved') || 'All rights reserved.'}
+            </p>
+            <div className="footer-policy-links">
+              <span>Privacy Policy</span>
+              <span>Terms of Service</span>
+            </div>
           </div>
         </div>
       </footer>
+
+      {/* Premium Floating Navigation */}
+      <div className="floating-nav-wrapper">
+        <nav className="floating-nav-container">
+          {navItems.map(item => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`nav-tab ${activeTab === item.id ? 'active' : ''}`}
+            >
+              {item.icon}
+              <span>{item.label}</span>
+            </button>
+          ))}
+        </nav>
+      </div>
     </div>
   );
 }

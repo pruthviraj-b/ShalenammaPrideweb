@@ -1,0 +1,12 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /announcements/{allPaths=**} {
+      allow read: if true;
+      allow write: if true; // Updated to allow writes temporarily since no auth setup in web admin yet
+    }
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+}
