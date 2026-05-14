@@ -2,10 +2,20 @@
 <p align="center"><strong>The Real-Time Window into School Life for Parents</strong></p>
 
 <p align="center">
-  <a href="https://github.com/pruthviraj-b/ShalenammaPrideweb"><strong>Parent Web Portal</strong></a> •
-  <a href="https://github.com/pruthviraj-b/ShalenammaPride"><strong>Android Admin App</strong></a> •
-  <a href="https://shalenammapride-b4fc8.web.app/"><strong>Live Demo</strong></a>
+  <a href="https://linkedin.com/in/pruthvirajbc"><img src="https://img.shields.io/badge/LinkedIn-Profile-blue?style=for-the-badge&logo=linkedin" alt="LinkedIn"></a>
+  <a href="https://github.com/pruthviraj-b/ShalenammaPrideweb"><img src="https://img.shields.io/badge/Web-Parent_Portal-orange?style=for-the-badge&logo=react" alt="Web Portal"></a>
+  <a href="https://github.com/pruthviraj-b/ShalenammaPride"><img src="https://img.shields.io/badge/Android-Admin_App-green?style=for-the-badge&logo=android" alt="Android App"></a>
 </p>
+
+---
+
+### ⚡ Quick Start: Experience the Real-Time Sync (Live Demo)
+**Examiner's Guide: How to verify the "Communication Bond" between platforms:**
+
+1.  **Open this Web Portal:** [https://shalenammapride-b4fc8.web.app/](https://shalenammapride-b4fc8.web.app/)
+2.  **Open the Admin App:** (Install the [Admin APK](https://github.com/pruthviraj-b/ShalenammaPride/raw/main/Shale-Namma-Pride-Premium-Auth.apk) or run the [Android Code](https://github.com/pruthviraj-b/ShalenammaPride)).
+3.  **Make a Change:** In the Admin App, update today's **Meal Menu** or post a new **Announcement**.
+4.  **Watch this Page:** See the website update **instantly** without a page refresh! 🚀
 
 ---
 
@@ -14,12 +24,23 @@
 | Field | Details |
 | :--- | :--- |
 | **Project Title** | **Shale-Namma Parent Portal (ಶಾಲಾ ನಮ್ಮ ಹೆಮ್ಮೆ)** |
-| **Short Description** | A high-fidelity, read-only web dashboard designed for parents to monitor school meals, facility health, and announcements in real-time. |
-| **Live URL** | [https://shalenammapride-b4fc8.web.app/](https://shalenammapride-b4fc8.web.app/) |
-| **GitHub URL** | [https://github.com/pruthviraj-b/ShalenammaPrideweb](https://github.com/pruthviraj-b/ShalenammaPrideweb) |
-| **Problem Statement** | Parents are often disconnected from their children's school environment, particularly regarding meal quality and basic infrastructure. This portal solves that by providing a transparent, bilingual, and live-updated view of school operations. |
-| **Technologies Used** | **Frontend:** React.js, Vite, Vanilla CSS. <br> **Real-time:** Firebase Cloud Firestore. <br> **Deployment:** Firebase Hosting. |
+| **Ecosystem** | Dual-Platform (React Web Parent Portal + Android Admin App) |
+| **Problem Solved** | Provides transparent, real-time access to school operations for parents with diverse linguistic backgrounds. |
+| **Technologies** | React.js, Vite, Firebase Cloud Firestore, Firebase Hosting |
 | **Connected Android Repo** | [ShalenammaPride](https://github.com/pruthviraj-b/ShalenammaPride) |
+
+---
+
+### 🚀 Tech Stack & Skills
+
+**Frontend Development**  
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) 
+![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white) 
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+
+**Backend & Real-time**  
+![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase) 
+![Google Cloud](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
 
 ---
 
