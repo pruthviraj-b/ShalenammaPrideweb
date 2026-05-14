@@ -43,7 +43,7 @@ const Dashboard = ({ setActiveTab }) => {
     <section className="dashboard-section animate-slide-up" id="dashboard-grid">
       <div className="container">
 
-        {/* Quick Access Service Cards */}
+
         <div className="service-grid">
           {services.map((svc) => (
             <div key={svc.id} className="service-card" onClick={() => setActiveTab(svc.id)}>
@@ -55,7 +55,7 @@ const Dashboard = ({ setActiveTab }) => {
           ))}
         </div>
 
-        {/* Today's Meal Preview */}
+
         {latestMeal && (
           <div className="card" style={{ cursor: 'pointer', marginTop: '0.5rem' }} onClick={() => setActiveTab('Meals')}>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>

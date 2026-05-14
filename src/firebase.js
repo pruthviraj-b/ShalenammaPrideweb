@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
 import { getStorage } from 'firebase/storage';
 
-// TODO: Replace this with your own Firebase configuration from the Firebase console
+
 const firebaseConfig = {
   apiKey: "AIzaSyBC7O-qYLDMoGQZS58FtqTYLgN11Vva-ds",
   authDomain: "shalenammapride-b4fc8.firebaseapp.com",

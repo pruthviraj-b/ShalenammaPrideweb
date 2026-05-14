@@ -41,7 +41,7 @@ function App() {
       <ToastContainer />
       <Lightbox />
 
-      {/* Government-Style Header */}
+
       <header className="govt-header">
         <div className="container">
           <div className="govt-header-top">
@@ -69,7 +69,7 @@ function App() {
             <span><MessageSquare size={14} /> {t('valCommunication')}</span>
           </div>
 
-          {/* Quick Links Header Nav */}
+
           <nav className="premium-nav">
             {navItems.map(item => (
               <button 
@@ -89,7 +89,7 @@ function App() {
 
       <NotificationMarquee />
 
-      {/* Main Content */}
+
       <main style={{ flex: 1, paddingBottom: '80px' }}>
         {activeTab === 'Home' && (
           <>
@@ -151,7 +151,7 @@ function App() {
           {activeTab === 'Notices' && <AnnouncementsFeed />}
         </div>
 
-        {/* CTA Section */}
+
         {activeTab === 'Home' && (
           <section className="promo-section">
              <div className="container">
@@ -163,10 +163,10 @@ function App() {
         )}
       </main>
 
-      {/* Premium Dark Govt Footer */}
+
       <footer className="site-footer">
         <div className="container">
-          {/* Brand Header */}
+
           <div className="footer-brand">
             <div className="footer-logo-wrapper">
               <img src="/logo.png" alt="Gov Logo" className="footer-logo-small" />
@@ -182,7 +182,7 @@ function App() {
             </p>
           </div>
 
-          {/* Quick Links Grid */}
+
           <div className="footer-section">
             <h4 className="footer-section-title">{t('footerQuickLinks') || 'Quick Access'}</h4>
             <div className="footer-links-grid">
@@ -201,7 +201,7 @@ function App() {
             </div>
           </div>
 
-          {/* Contact Unified Card */}
+
           <div className="footer-section">
             <h4 className="footer-section-title">{t('footerContact') || 'Contact Administration'}</h4>
             <div className="footer-contact-card">
@@ -223,7 +223,7 @@ function App() {
             </div>
           </div>
 
-          {/* Copyright Area */}
+
           <div className="footer-bottom">
             <p className="copyright-text">
               &copy; 2025 Shale-Namma Pride • {t('allRightsReserved') || 'All rights reserved.'}
@@ -236,7 +236,7 @@ function App() {
         </div>
       </footer>
 
-      {/* Premium Floating Navigation */}
+
       <div className="floating-nav-wrapper">
         <nav className="floating-nav-container">
           {navItems.map(item => (

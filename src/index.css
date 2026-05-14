@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+Kannada:wght@400;500;600;700&display=swap');
 
 :root {
-  /* PREMIUM GOLD COLOR SYSTEM */
+
   --primary-bg: #FCFBFA;
   --card-bg: #FFFFFF;
   --primary-navy: #000000; /* Main Text / Headings */
@@ -12,11 +12,11 @@
   --warning: #F59E0B;
   --danger: #DC2626;
 
-  /* Typography System */
+
   --font-family: 'Inter', 'Noto Sans Kannada', sans-serif;
   --font-heading: 'Playfair Display', serif;
   
-  /* Spacing System */
+
   --spacing-4: 4px;
   --spacing-8: 8px;
   --spacing-12: 12px;
@@ -28,17 +28,17 @@
   --spacing-48: 48px;
   --spacing-64: 64px;
 
-  /* Global Theme Styles */
+
   --radius-card: 24px;
   --radius-btn: 9999px; /* Pill shape */
   --radius-full: 9999px;
   
-  /* Deep Premium Shadows */
+
   --shadow-sm: 0 4px 12px rgba(212, 175, 55, 0.05);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 16px 40px rgba(212, 175, 55, 0.12);
 
-  /* Fallback aliases for existing components to prevent breakage */
+
   --bg: var(--primary-bg);
   --navy: var(--primary-navy);
   --blue: var(--govt-blue);
@@ -62,7 +62,7 @@
   --govt-text-main: var(--primary-navy);
 }
 
-/* === DARK MODE (Premium Dark Gold) === */
+
 html.dark {
   --primary-bg: #050505;
   --card-bg: #0A0A0A;
@@ -82,7 +82,7 @@ html.dark {
   --govt-surface-light: #111111;
 }
 
-/* === RESET === */
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { overflow-x: hidden; scroll-behavior: smooth; height: 100%; }
 
@@ -96,22 +96,22 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* === TYPOGRAPHY SYSTEM === */
+
 h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); color: var(--primary-navy); line-height: 1.2; }
 
-/* Hero Title: 36px / 700 */
+
 h1, .hero-title { font-size: 40px; font-weight: 800; margin-bottom: var(--spacing-16); letter-spacing: -0.02em; }
 
-/* Section Title: 28px / 700 */
+
 h2, .section-title { font-size: 32px; font-weight: 700; margin-bottom: var(--spacing-16); letter-spacing: -0.01em; }
 
-/* Card Title: 20px / 600 */
+
 h3, .card-title { font-size: 20px; font-weight: 600; margin-bottom: var(--spacing-8); font-family: var(--font-family); }
 
-/* Body Text: 16px / 400 */
+
 p, .body-text { font-size: 16px; font-weight: 400; color: var(--muted-text); margin-bottom: var(--spacing-16); }
 
-/* Small Text: 14px / 400 */
+
 .small-text, small { font-size: 14px; font-weight: 400; }
 
 .container { width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 var(--spacing-16); }
@@ -170,7 +170,7 @@ html.dark .govt-header {
 .values-bar span { display: flex; align-items: center; gap: 4px; }
 .values-bar .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--border-color); }
 
-/* === LANGUAGE & DARK MODE TOGGLES === */
+
 .lang-toggle-wrapper {
   display: flex; 
   background: var(--primary-bg);
@@ -205,7 +205,7 @@ html.dark .govt-header {
 .dark-mode-toggle:hover { transform: scale(1.05); }
 .govt-header-controls { position: absolute; right: var(--spacing-16); top: var(--spacing-16); display: flex; align-items: center; }
 
-/* === LATEST TICKER === */
+
 .ticker-bar {
   background: var(--card-bg); 
   border-bottom: 1px solid var(--border-color);
@@ -230,7 +230,7 @@ html.dark .govt-header {
 }
 @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-/* === HERO BADGE === */
+
 .hero-badge {
   display: inline-flex; align-items: center; justify-content: center; text-align: center; gap: 0.5rem;
   background: var(--card-bg); border: 1px solid var(--border-color);
@@ -240,7 +240,7 @@ html.dark .govt-header {
   box-shadow: var(--shadow-sm);
 }
 
-/* === BUTTON SYSTEM === */
+
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   gap: var(--spacing-8); 
@@ -278,7 +278,7 @@ html.dark .btn-primary { color: #000000; }
   transform: translateY(-2px);
 }
 
-/* === CARD DESIGN SYSTEM (Floating) === */
+
 .card {
   background: var(--card-bg); 
   border: 1px solid var(--border-color);
@@ -347,7 +347,7 @@ html.dark .btn-primary { color: #000000; }
   margin-top: var(--spacing-16);
 }
 
-/* === BOTTOM NAVIGATION === */
+
 .floating-nav-wrapper {
   position: fixed;
   bottom: var(--spacing-24);
@@ -415,7 +415,7 @@ html.dark .floating-nav-container {
   background: var(--govt-blue); box-shadow: 0 0 10px var(--govt-blue);
 }
 
-/* === RESPONSIVE LAYOUTS === */
+
 @media (max-width: 768px) {
   .govt-header-controls { position: static; margin: 0 auto var(--spacing-16) auto; width: fit-content; }
   .govt-header { padding: var(--spacing-24) 0 var(--spacing-16); }
@@ -431,7 +431,7 @@ html.dark .floating-nav-container {
   .floating-nav-wrapper { display: none; }
 }
 
-/* === GENERAL UTILITIES & EXISTING SECTIONS === */
+
 .hero-section {
   text-align: center; padding: var(--spacing-64) 0 var(--spacing-48);
 }
@@ -577,7 +577,7 @@ html.dark .promo-section { background: var(--gray-100); color: var(--primary-nav
   50% { opacity: .5; }
 }
 
-/* Premium Header Navigation */
+
 .premium-nav {
   margin-top: 2rem;
   display: flex;
@@ -631,7 +631,7 @@ html.dark .promo-section { background: var(--gray-100); color: var(--primary-nav
   transition: transform 0.3s ease;
 }
 
-/* Shimmer Loader Utility */
+
 .shimmer {
   background: linear-gradient(90deg, var(--card-bg) 0%, var(--border-color) 50%, var(--card-bg) 100%);
   background-size: 200% 100%; animation: shimmer-load 1.5s infinite linear;

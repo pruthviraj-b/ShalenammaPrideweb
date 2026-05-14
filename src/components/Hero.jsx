@@ -7,7 +7,7 @@ const Hero = ({ setActiveTab }) => {
 
   return (
     <>
-      {/* Hero Section */}
+
       <section className="hero-section">
         <div className="container">
           <div className="hero-content">
@@ -36,7 +36,7 @@ const Hero = ({ setActiveTab }) => {
               </button>
             </div>
 
-            {/* Scroll Indicator */}
+
             <div className="scroll-indicator animate-bounce delay-1000" style={{ marginTop: '4rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', color: 'var(--muted-text)', opacity: 0.6 }}>
               <div style={{ width: '20px', height: '30px', border: '2px solid var(--muted-text)', borderRadius: '10px', position: 'relative' }}>
                 <div style={{ width: '4px', height: '8px', background: 'var(--muted-text)', borderRadius: '2px', position: 'absolute', top: '4px', left: '50%', transform: 'translateX(-50%)' }}></div>
